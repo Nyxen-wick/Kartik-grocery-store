@@ -1,3 +1,13 @@
+document.getElementById('toggle-theme').addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+});
+
+function handleQuantity(element, change) {
+  const input = element.parentElement.querySelector("input");
+  let current = parseInt(input.value) || 0;
+  input.value = Math.max(current + change, 0);
+}
+
 const sheetID = "1a8CKZGu23Ux1Gl8I1ajKNHXJDphaHY2oNdmSKYM9cVo";
 const sheetName = "Sheet1";
 const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
@@ -25,6 +35,11 @@ function fetchData() {
           <div class="product">
             <h2>${name} (${unit})</h2>
             <div class="price-tag">₹${price}</div>
+            <div class="quantity-section">
+              <button onclick="handleQuantity(this, -1)">➖</button>
+              <input type="number" value="1" min="1" readonly />
+              <button onclick="handleQuantity(this, 1)">➕</button>
+            </div>
             <a href="${waLink}" target="_blank">
               <img src="https://img.icons8.com/color/48/whatsapp--v1.png" />
               Order on WhatsApp
@@ -41,7 +56,6 @@ function fetchData() {
 fetchData();
 setInterval(fetchData, 10000);
 
-// 🔍 Live Search
 if (searchInput) {
   searchInput.addEventListener("input", () => {
     const query = searchInput.value.toLowerCase();
@@ -54,7 +68,6 @@ if (searchInput) {
   });
 }
 
-// 📴 Offline Detection
 window.addEventListener("offline", () => {
   alert("You're offline. Please check your internet connection.");
 });
